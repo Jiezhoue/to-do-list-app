@@ -1,17 +1,21 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import { useLocalStorage } from "react-use";
 
 const initialListData = [
-  { id: 1, 
-    title: "Create a to do list app", 
-    content: "Install react app first....",
-    isFinish: false,
-    create_date: Date.now()
-  }
+  // { id: 1, 
+  //   title: "Create a to do list app", 
+  //   content: "Install react app first....",
+  //   isFinish: false,
+  //   create_date: Date.now()
+  // }
 ]
 
 const listReducer = (previousState, instructions) => {
   let stateEditable = [...previousState];
   switch(instructions.type) {
+    case 'setup':
+      stateEditable = instructions.localStorage;
+      return stateEditable
     case 'add':
       const newList = {};
       newList.id = previousState.length + 1
@@ -43,6 +47,18 @@ export function useListDispatch() {
 
 export default function ListProvider(props) {
   const [listData, listDispatch] = useReducer(listReducer, initialListData)
+
+  const [persistentList, setPersistentList] = useLocalStorage('lists', listData)
+
+
+  useEffect(()=> {
+    listDispatch({type: 'setup', localStorage: persistentList})
+  },[])
+
+  useEffect(() => {
+    console.log("save to local storage")
+    setPersistentList(listData)
+  },[listData])
 
   return (
     <ListDataContext.Provider value={listData}>
