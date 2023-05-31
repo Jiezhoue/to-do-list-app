@@ -19,8 +19,7 @@ const listReducer = (previousState, instructions) => {
       console.log('update');
       break;
     case 'delete':
-      console.log('delete')
-      break;
+      return stateEditable.filter((list)=>list.id !== instructions.id)
     default:
       return previousState;
   }
