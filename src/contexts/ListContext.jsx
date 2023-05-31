@@ -13,8 +13,13 @@ const listReducer = (previousState, instructions) => {
   let stateEditable = [...previousState];
   switch(instructions.type) {
     case 'add':
-      console.log("add");
-      break;
+      const newList = {};
+      newList.id = previousState.length + 1
+      newList.title = instructions.data.title;
+      newList.content = instructions.data.content
+      newList.isFinish = false;
+      newList.create_date = Date.now();
+      return [...stateEditable, newList]
     case 'update':
       console.log('update');
       break;
