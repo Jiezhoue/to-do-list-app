@@ -2,12 +2,13 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { useLocalStorage } from "react-use";
 
 const initialListData = [
-  // { id: 1, 
-  //   title: "Create a to do list app", 
-  //   content: "Install react app first....",
-  //   isFinish: false,
-  //   create_date: Date.now()
-  // }
+  { id: 1, 
+    title: "Create a to do list app", 
+    content: "Install react app first....",
+    isFinish: true,
+    dueDate: new Date().setDate(new Date().getDate() + 1),
+    create_date: Date.now()
+  }
 ]
 
 const listReducer = (previousState, instructions) => {
@@ -17,16 +18,12 @@ const listReducer = (previousState, instructions) => {
       stateEditable = instructions.localStorage;
       return stateEditable
     case 'add':
-      const newList = {};
-      newList.id = previousState.length + 1
-      newList.title = instructions.data.title;
-      newList.content = instructions.data.content
-      newList.isFinish = false;
-      newList.create_date = Date.now();
-      return [...stateEditable, newList]
+      return [...stateEditable, instructions.newList]
     case 'update':
       console.log('update');
-      break;
+      let index = stateEditable.findIndex((list)=>list.id === instructions.updatedList.id)
+      stateEditable[index]= instructions.updatedList
+      return stateEditable;
     case 'delete':
       return stateEditable.filter((list)=>list.id !== instructions.id)
     default:
@@ -53,11 +50,13 @@ export default function ListProvider(props) {
 
   useEffect(()=> {
     listDispatch({type: 'setup', localStorage: persistentList})
+    // eslint-disable-next-line
   },[])
 
   useEffect(() => {
     console.log("save to local storage")
     setPersistentList(listData)
+    // eslint-disable-next-line
   },[listData])
 
   return (
