@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { useLocalStorage } from "react-use";
 
 const initialListData = [
-  { id: 1, 
+  { id: Date.now(), 
     title: "Create a to do list app", 
     content: "Install react app first....",
     isFinish: true,

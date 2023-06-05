@@ -29,7 +29,7 @@ export default function ListForm(props) {
 
   function saveLocalList () {
     let tempList = {
-      id: id || listData.length + 1,
+      id: id || Date.now(),
       title: title,
       content: content,
       isFinish: isFinish,
@@ -43,29 +43,36 @@ export default function ListForm(props) {
     }else{
       listDispatch({type:'add', newList: tempList})
     }
+
+    setTitle("")
+    setContent("")
+    setIsFinish(false)
   }
 
   return (
-    <div className="list-form">
+    <div className="card d-flex flex-column justify-content-center align-items-center bg-secondary">
+    <div className="card-body d-flex flex-column gap-2 list-group text-body-primary">
       <form>
-        <label>Title: </label>
-        <input type="text" value={title} onChange={(event)=>setTitle(event.target.value)}></input>
-        <label>Content: </label>
-        <input type="text" value={content} onChange={(event)=>setContent(event.target.value)}></input>
-        <label>Is completed</label>
-        <input type="checkbox" value={Boolean(isFinish)} onChange={()=>{
-          
-        setIsFinish(!isFinish)
-        }}></input>
-        <label>Due Date: </label>
-        <input type="date" value={new Date(dueDate).toISOString().split("T")[0]} onChange={(event)=>
-        {setDueDate(event.target.value)
-        }}/>
-        {/* <label>Created Date</label>
-        <input type></input> */}
-      </form>
+          <label className="me-3">Title: </label>
+          <input type="text" value={title} onChange={(event)=>setTitle(event.target.value)}></input>
+          <label className="me-3">Content: </label>
+          <input type="text" value={content} onChange={(event)=>setContent(event.target.value)}></input>
+          <label>Is completed</label>
+          <input type="checkbox" value={Boolean(isFinish)} onChange={()=>{
+            
+          setIsFinish(!isFinish)
+          }}></input>
+          <label>Due Date: </label>
+          <input type="date" value={new Date(dueDate).toISOString().split("T")[0]} onChange={(event)=>
+          {setDueDate(event.target.value)
+          }}/>
+          {/* <label>Created Date</label>
+          <input type></input> */}
+        </form>
 
-      <button onClick={saveLocalList}>Submit</button>
+        <button onClick={saveLocalList}>Submit</button>
+    </div>
+
     </div>
   )
 }

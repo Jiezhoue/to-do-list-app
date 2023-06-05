@@ -15,7 +15,7 @@ export default function ListParent (props) {
   return (
     <div>
       {editMode ? <ListForm id={id} changeMode={toggleEditMode}/> : <ListDisplay id={id}/>}
-      <button onClick={toggleEditMode}>Edit</button>
+      <button className="btn btn-primary mb-4 px-5" onClick={toggleEditMode}>Edit</button>
     </div>
   )
 }
